@@ -1,0 +1,311 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KimPizza</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./static/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon/favicon-16x16.png">
+  <link rel="manifest" href="./static/favicon/site.webmanifest">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script type="text/javascript">
+
+    ordercontent = []
+    total = 0
+    items = 0
+    function AddPizza(pizza) {
+      
+      listArea = document.getElementById("theList")
+      newElement = document.createElement('p');
+      ordercontent.push(pizza)
+
+      if (pizza == "BBQChicken") {
+        newElement.innerHTML = "BBQ Chicken: <b>£5.99</b> ";
+        total = total + 5.99
+        items = items + 1
+      } else if (pizza == "Hawaiian") {
+        newElement.innerHTML = "Hawaiian: <b>£5.99</b> ";
+        total = total + 5.99
+        items = items + 1
+      } else if (pizza == "Cheese") {
+        newElement.innerHTML = "Cheese: <b>£4.99</b> ";
+        total = total + 4.99
+        items = items + 1
+      } else if (pizza == "Margherita") {
+        newElement.innerHTML = "Margherita: <b>£4.99</b> ";
+        total = total + 4.99
+        items = items + 1
+      } else if (pizza == "Pepperoni") {
+        newElement.innerHTML = "Pepperoni: <b>£5.99</b> ";
+        total = total + 5.99
+        items = items + 1
+      } else if (pizza == "Veggie") {
+        newElement.innerHTML = "Veggie: <b>£6.99</b> ";
+        total = total + 6.99
+        items = items + 1
+      }
+      
+      totalelement = document.getElementById("TotalAmount")
+      totalelement.innerHTML = "£"+total.toFixed(2)
+
+      itemselement = document.getElementById("ItemsAmount")
+      itemselement.innerHTML = items
+
+      listArea.append(newElement);
+
+    };
+
+    function Submit(){
+
+        emailtickbox = document.getElementById("save-info")
+        console.log(emailtickbox.checked)
+        if (emailtickbox.checked) {
+          emailname = document.getElementById("email")
+          emailvalue = emailname.value
+          ordername = document.getElementById('nameform').value
+          let orderData2={'name': ordername, 'contents': ordercontent, 'total': total, 'email': emailvalue};
+          console.log(orderData2);
+          fetch('/api/sendEmail', {
+          method: 'POST', // or 'PUT'
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData2),
+          })
+          .then(response => response.json())
+          .then(data => {
+          console.log('Success:', data);
+          })
+          .catch((error) => {
+          console.error('Error:', error);
+          });
+        } else {
+          console.log("no email sent")
+        }
+
+        console.log(document.getElementById('nameform').value)
+        ordername = document.getElementById('nameform').value
+        let orderData={'name': ordername, 'contents': ordercontent, 'total': total};
+        console.log(orderData);
+        fetch('/api/submitOrder', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+        })
+        .then(response => response.json())
+        .then(data => {
+        console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+
+        setTimeout(function(){
+        location.href = "/viewOrder/"+ordername;
+        }, 1000);
+      
+    }
+
+  </script>
+
+  <!-- Custom styles for this template -->
+  <link href="../assets/css/form-validation.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  
+<div class="container">
+<main>
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="../static/images/KIM_Logo.webp" alt="" width="72" height="65">
+    <h2>KimPizza</h2>
+    <p class="lead">The Best Pizza in the whole of Bedfordshire</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">BBQ Chicken</h4>
+          <label class="form-label">£5.99</label>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <img src="../static/images/bbq_chicken.jpg" width="200" height="200">
+          </ul>
+          <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('BBQChicken')">Add to cart</button>
+        </div>
+      </div>
+    </div>
+
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Hawaiian</h4>
+            <label class="form-label">£5.99</label>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+              <img src="../static/images/hawaiian.jpg" width="200" height="200">
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('Hawaiian')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Cheese</h4>
+            <label class="form-label">£4.99</label>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+              <img src="../static/images/cheese.jpg" width="200" height="200">
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('Cheese')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+
+  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">Margherita</h4>
+          <label class="form-label">£4.99</label>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <img src="../static/images/margherita.jpeg" width="200" height="200">
+          </ul>
+          <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('Margherita')">Add to cart</button>
+        </div>
+      </div>
+    </div>
+
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Pepperoni</h4>
+            <label class="form-label">£5.99</label>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+              <img src="../static/images/pepperoni.jpg" width="200" height="200">
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('Pepperoni')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Veggie</h4>
+            <label class="form-label">£6.99</label>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+              <img src="../static/images/veggie.jpg" width="200" height="200">
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="AddPizza('Veggie')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+  <div class="row g-5">
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-primary">Your cart</span>
+        <span class="badge bg-primary rounded-pill" id="ItemsAmount">0</span>
+      </h4>
+
+      <div id="theList"></div><br>
+
+      <ul class="list-group mb-3" id="listgroup">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total</span>
+          <strong id="TotalAmount">£0</strong>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-7 col-lg-8">
+      <h4 class="mb-3">Order Details</h4>
+      <form class="needs-validation" novalidate="">
+        <div class="row g-3">  
+
+          <div class="col-12">
+            <label for="name" class="form-label">Name</label>
+            <div class="input-group has-validation">
+      
+              <input type="text" class="form-control" id="nameform" placeholder="Name" required="">
+            <div class="invalid-feedback">
+                Your name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+            <div class="invalid-feedback">
+              Please enter a valid email address for delivery updates.
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="save-info">
+          <label class="form-check-label" for="save-info">Email order details</label>
+        </div>
+
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-primary btn-lg" type="button" onclick="Submit()">Order</button>
+      </form>
+    </div>
+  </div>
+</main>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-1"></p>
+  <ul class="list-inline">
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+  </ul>
+</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/form-validation.js"></script>
+</body></html>

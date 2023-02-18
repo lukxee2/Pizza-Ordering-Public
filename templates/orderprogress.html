@@ -1,0 +1,68 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="5">
+  <title>KimPizza</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon/favicon-16x16.png">
+  <link rel="manifest" href="../static/favicon/site.webmanifest">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link href="../assets/css/form-validation.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  
+<div class="container">
+<main>
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="../static/images/KIM_Logo.webp" alt="" width="72" height="65">
+    <h2>Awaiting your Pizza</h2>
+    <p class="lead">Follow the progress here!</p>
+  </div>
+
+  <p class="lead">Name: {{orders[name].name}}</p>
+  <p class="lead">Pizzas: {% for i in orders[name].contents %}
+  {{i}},
+  {% endfor %}</p>
+  <p class="lead">Total: £{{orders[name].total|round}}</p>
+  <p class="lead">Time Of Order: {{orders[name].time}}</p>
+  <br>
+  <p class="lead"><b>Status: {{orders[name].status}}</b></p>
+
+</main>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-1"></p>
+  <ul class="list-inline">
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+  </ul>
+</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/form-validation.js"></script>
+</body></html>

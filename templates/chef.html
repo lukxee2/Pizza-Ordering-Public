@@ -1,0 +1,129 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="100">
+  <title>KimPizza</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./static/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon/favicon-16x16.png">
+  <link rel="manifest" href="./static/favicon/site.webmanifest">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+  </style>
+
+  <script type="text/javascript">
+    function Update(id) {
+      button = document.getElementById(id)
+      newstatus = document.getElementById(id)
+      console.log(newstatus.value)
+      console.log(id)
+
+        let orderData={'name': id, 'status': newstatus.value};
+        console.log(orderData);
+        fetch('/api/UpdateOrder', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+        })
+        .then(response => response.json())
+        .then(data => {
+        console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+
+        setTimeout(function(){
+        location.href = "/chef";
+        }, 1000);
+
+
+
+
+      console.log(button)
+    }
+  </script>
+
+  <!-- Custom styles for this template -->
+  <link href="../assets/css/form-validation.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  
+<div class="container">
+<main>
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="../static/images/KIM_Logo.webp" alt="" width="72" height="65">
+    <h2>Chef Page</h2>
+    <p class="lead">Manage Orders here</p>
+  </div>
+  
+  <div class="list-group">
+
+    {% for i in orders %}
+    <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true" id="cards">
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        <div>
+          <h5 class="mb-0" id="Order Name">{{orders[i].name}}</h5>
+          <p class="mb-0 opacity-75">{% for x in orders[i].contents %}
+            {{x}},
+            {% endfor %}</p>
+          <p class="lead"><b>Status: {{orders[i].status}}</b></p>
+          <p class="opacity-50 text-nowrap">£{{orders[i].total}}</p>
+          <div class="search_categories">
+            <div class="select">
+               <select id="{{i}}" value="{{orders[i].status}}" name="search_categories">
+                  <option value="none" slected="true"></option>
+                  <option value="Not Started">Not Started</option>
+                  <option value="Cooking">Cooking</option>
+                  <option value="Complete">Complete</option>
+                </select><br>
+                <br><button id="{{i}}" class="btn btn-dark" type="submit" onclick="Update(this.id)">Update</button>
+             </div>
+         </div>
+        </div>
+        <h5 class="opacity-50 text-nowrap">{{orders[i].time}}</h5>
+      </div>
+
+    </a>
+
+    {% endfor %}
+
+  </div>
+  <br><br>
+
+</main>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-1"></p>
+  <ul class="list-inline">
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+    <li class="list-inline-item"></li>
+  </ul>
+</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/form-validation.js"></script>
+</body></html>
